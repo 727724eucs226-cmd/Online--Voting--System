@@ -1,9 +1,20 @@
 package com.examly.springapp.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Poll {
@@ -26,11 +37,21 @@ public class Poll {
     private LocalDateTime expiresAt;
 
     private boolean isPublic;
-
+private String privateLink;
     private boolean allowAnonymous;
-@OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-private List<PollOption> options = new ArrayList<>();
-    // getters & setters
+
+    @Enumerated(EnumType.STRING)
+    private PollStatus status = PollStatus.OPEN;
+
+
+    @OneToMany(
+        mappedBy = "poll",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true,
+        fetch = FetchType.EAGER
+    )
+    private List<PollOption> options = new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -40,6 +61,7 @@ private List<PollOption> options = new ArrayList<>();
         this.id = id;
     }
 
+
     public String getTitle() {
         return title;
     }
@@ -47,6 +69,7 @@ private List<PollOption> options = new ArrayList<>();
     public void setTitle(String title) {
         this.title = title;
     }
+
 
     public String getDescription() {
         return description;
@@ -56,6 +79,7 @@ private List<PollOption> options = new ArrayList<>();
         this.description = description;
     }
 
+
     public String getCreatedBy() {
         return createdBy;
     }
@@ -63,6 +87,7 @@ private List<PollOption> options = new ArrayList<>();
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
+
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -72,6 +97,7 @@ private List<PollOption> options = new ArrayList<>();
         this.createdAt = createdAt;
     }
 
+
     public LocalDateTime getExpiresAt() {
         return expiresAt;
     }
@@ -80,6 +106,7 @@ private List<PollOption> options = new ArrayList<>();
         this.expiresAt = expiresAt;
     }
 
+
     public boolean isPublic() {
         return isPublic;
     }
@@ -87,6 +114,14 @@ private List<PollOption> options = new ArrayList<>();
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
     }
+    public String getPrivateLink() {
+    return privateLink;
+}
+
+public void setPrivateLink(String privateLink) {
+    this.privateLink = privateLink;
+}
+
 
     public boolean isAllowAnonymous() {
         return allowAnonymous;
@@ -95,6 +130,16 @@ private List<PollOption> options = new ArrayList<>();
     public void setAllowAnonymous(boolean allowAnonymous) {
         this.allowAnonymous = allowAnonymous;
     }
+
+
+    public PollStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PollStatus status) {
+        this.status = status;
+    }
+
 
     public List<PollOption> getOptions() {
         return options;
